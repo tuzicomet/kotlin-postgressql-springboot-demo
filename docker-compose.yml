@@ -4,7 +4,7 @@ services:
     image: kotlindemo:latest
     build: 
       context: .
-      dockerfile: Dockerfile
+      dockerfile: DockerFile
       args:
         DB_URL: ${DB_URL}
         PG_USER: ${PG_USER}
