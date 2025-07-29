@@ -34,4 +34,25 @@ class UserController(@Autowired private val userRepository: UserRepository){
             ResponseEntity(HttpStatus.NOT_FOUND)
         }
     }
+
+    // Update an existing user
+    @PutMapping("/{id}")
+    fun updateUserById(@PathVariable("id") userId: Int, @RequestBody user: User): ResponseEntity<User> {
+        // Try to find the existing user by ID
+        val existingUser = userRepository.findById(userId).orElse(null)
+
+        // Return error 404 if user not found
+        if (existingUser == null) {
+            return ResponseEntity(HttpStatus.NOT_FOUND)
+        }
+
+        // Create a copy of the existing user with updated fields
+        val updatedUser = existingUser.copy(name = user.name, email = user.email)
+
+        // Save the updated user back to the database
+        userRepository.save(updatedUser)
+
+        // Return the updated user with HTTP 200 OK
+        return ResponseEntity(updatedUser, HttpStatus.OK)
+    }
 }
