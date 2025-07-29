@@ -55,4 +55,20 @@ class UserController(@Autowired private val userRepository: UserRepository){
         // Return the updated user with HTTP 200 OK
         return ResponseEntity(updatedUser, HttpStatus.OK)
     }
+
+    // Delete an existing user
+    @DeleteMapping("/{id}")
+    fun deleteUserById(@PathVariable("id") userId: Int): ResponseEntity<User> {
+        // Check if the user exists
+        if (!userRepository.existsById(userId)) {
+            // Return 404 Not Found if user doesn't exist
+            return ResponseEntity(HttpStatus.NOT_FOUND)
+        }
+
+        // Delete the user
+        userRepository.deleteById(userId)
+
+        // Return 204 No Content to indicate successful deletion with no body
+        return ResponseEntity(HttpStatus.NO_CONTENT)
+    }
 }
